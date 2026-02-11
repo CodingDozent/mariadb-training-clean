@@ -52,10 +52,10 @@ $cfg['Servers'][1]['host'] = '127.0.0.1';
 $cfg['Servers'][1]['AllowNoPassword'] = false;
 EOF
 
-log "Starting phpMyAdmin on port 8080..."
-php -S 0.0.0.0:8080 -t /usr/share/phpmyadmin >> $LOGFILE 2>&1 &
+log "Starting phpMyAdmin on port 8888..."
+php -S 0.0.0.0:8888 -t /usr/share/phpmyadmin >> $LOGFILE 2>&1 &
 sleep 2
 
 log "=== Setup complete ==="
 log "MariaDB root password: root"
-log "phpMyAdmin running on port 8080"
+log "phpMyAdmin running on port 8888"
