@@ -1,6 +1,6 @@
 {
   "name": "MariaDB Training",
-  "image": "mcr.microsoft.com/devcontainers/php:8.2",
+  "image": "php:8.2-apache",
   "overrideCommand": false,
   "remoteUser": "vscode",
   "forwardPorts": [3306, 8888],
