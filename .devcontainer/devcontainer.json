@@ -1,7 +1,7 @@
 {
   "name": "MariaDB Training",
   "image": "mcr.microsoft.com/devcontainers/base:debian",
-  "overrideCommand": false,
+  "overrideCommand": true,
   "remoteUser": "vscode",
   "forwardPorts": [3306, 8888],
   "postCreateCommand": "bash .devcontainer/setup.sh"
