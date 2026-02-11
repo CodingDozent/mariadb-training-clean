@@ -1,8 +1,8 @@
 {
   "name": "MariaDB Training",
-  "image": "php:8.2",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
   "overrideCommand": false,
-  "remoteUser": "root",
+  "remoteUser": "vscode",
   "forwardPorts": [3306, 8888],
   "postCreateCommand": "bash .devcontainer/setup.sh"
 }
