@@ -52,6 +52,10 @@ $cfg['Servers'][1]['host'] = '127.0.0.1';
 $cfg['Servers'][1]['AllowNoPassword'] = false;
 EOF
 
+sudo chmod 644 /usr/share/phpmyadmin/config.inc.php 
+sudo chmod 755 /usr/share/phpmyadmin
+
+
 log "Starting phpMyAdmin on port 8888..."
 nohup php -S 0.0.0.0:8888 -t /usr/share/phpmyadmin >/tmp/pma.log 2>&1 &
 sleep 2
