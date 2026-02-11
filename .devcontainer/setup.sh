@@ -29,11 +29,10 @@ sudo mkdir -p /var/log/mysql
 sudo touch /var/log/mysql/error.log
 sudo chown mysql:mysql /var/log/mysql/error.log
 
-sudo sed -i '/^
-
-\[mysqld\]
-
-/a log_error = /var/log/mysql/error.log' /etc/mysql/mariadb.conf.d/50-server.cnf
+sudo tee /etc/mysql/mariadb.conf.d/99-error-log.cnf >/dev/null <<'EOF'
+[mysqld]
+log_error = /var/log/mysql/error.log
+EOF
 
 
 
