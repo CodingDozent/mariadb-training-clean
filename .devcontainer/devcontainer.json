@@ -1,7 +1,8 @@
 {
   "name": "MariaDB Training",
-  "image": "php:8.2-apache",
+  "image": "php:8.2",
   "overrideCommand": false,
+  "remoteUser": "root",
   "forwardPorts": [3306, 8888],
   "postCreateCommand": "bash .devcontainer/setup.sh"
 }
