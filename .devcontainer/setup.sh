@@ -24,6 +24,19 @@ sudo apt-get install -y mariadb-server mariadb-client >> $LOGFILE 2>&1
 log "Configuring MariaDB..."
 sudo sed -i "s/^bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf || true
 
+log "Enabling MariaDB error log..."
+sudo mkdir -p /var/log/mysql
+sudo touch /var/log/mysql/error.log
+sudo chown mysql:mysql /var/log/mysql/error.log
+
+sudo sed -i '/^
+
+\[mysqld\]
+
+/a log_error = /var/log/mysql/error.log' /etc/mysql/mariadb.conf.d/50-server.cnf
+
+
+
 log "Starting MariaDB..."
 sudo service mariadb start >> $LOGFILE 2>&1
 sleep 5
