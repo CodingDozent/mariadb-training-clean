@@ -31,6 +31,19 @@ EOF
 log "Creating training database..."
 mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS training;" >> $LOGFILE 2>&1
 
+log "Enabling Debian repositories..."
+echo "deb http://deb.debian.org/debian bookworm main contrib non-free" >> /etc/apt/sources.list
+echo "deb http://deb.debian.org/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list
+echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free" >> /etc/apt/sources.list
+
+log "Updating package lists..."
+apt-get update -y >> $LOGFILE 2>&1
+
+log "Installing PHP extensions..."
+apt-get install -y php8.2-mysql >> $LOGFILE 2>&1
+
+
+
 log "Downloading phpMyAdmin..."
 wget -q https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.zip -O /tmp/pma.zip
 
