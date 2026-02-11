@@ -10,20 +10,20 @@ log() {
 }
 
 log "Updating package lists..."
-sudo apt-get update -y >> $LOGFILE 2>&1
+apt-get update -y >> $LOGFILE 2>&1
 
 log "Installing MariaDB..."
-sudo apt-get install -y mariadb-server mariadb-client >> $LOGFILE 2>&1
+apt-get install -y mariadb-server mariadb-client unzip wget >> $LOGFILE 2>&1
 
 log "Configuring MariaDB..."
-sudo sed -i "s/^bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf || true
+sed -i "s/^bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf || true
 
 log "Starting MariaDB..."
-sudo mysqld_safe --skip-networking=0 --skip-bind-address >> $LOGFILE 2>&1 &
+mysqld_safe --skip-networking=0 --skip-bind-address >> $LOGFILE 2>&1 &
 sleep 5
 
 log "Setting root password..."
-sudo mysql <<EOF
+mysql <<EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
 FLUSH PRIVILEGES;
 EOF
@@ -36,15 +36,15 @@ wget -q https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.zip
 
 log "Extracting phpMyAdmin..."
 unzip -q /tmp/pma.zip -d /tmp
-sudo rm -rf /usr/share/phpmyadmin
-sudo mv /tmp/phpMyAdmin-*-all-languages /usr/share/phpmyadmin
+rm -rf /usr/share/phpmyadmin
+mv /tmp/phpMyAdmin-*-all-languages /usr/share/phpmyadmin
 
 log "Preparing phpMyAdmin temp directory..."
-sudo mkdir -p /usr/share/phpmyadmin/tmp
-sudo chmod 777 /usr/share/phpmyadmin/tmp
+mkdir -p /usr/share/phpmyadmin/tmp
+chmod 777 /usr/share/phpmyadmin/tmp
 
 log "Creating phpMyAdmin config..."
-sudo tee /usr/share/phpmyadmin/config.inc.php >/dev/null <<'EOF'
+tee /usr/share/phpmyadmin/config.inc.php >/dev/null <<'EOF'
 <?php
 $cfg['blowfish_secret'] = 'supersecretblowfishkey1234567890';
 $cfg['Servers'][1]['auth_type'] = 'cookie';
@@ -52,9 +52,8 @@ $cfg['Servers'][1]['host'] = '127.0.0.1';
 $cfg['Servers'][1]['AllowNoPassword'] = false;
 EOF
 
-sudo chmod 644 /usr/share/phpmyadmin/config.inc.php 
-sudo chmod 755 /usr/share/phpmyadmin
-
+chmod 644 /usr/share/phpmyadmin/config.inc.php
+chmod 755 /usr/share/phpmyadmin
 
 log "Starting phpMyAdmin on port 8888..."
 nohup php -S 0.0.0.0:8888 -t /usr/share/phpmyadmin >/tmp/pma.log 2>&1 &
