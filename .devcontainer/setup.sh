@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
+# Warten, bis Codespaces das Workspace-Verzeichnis gemountet hat
+while [ ! -d "/workspaces" ] || [ ! -d "/workspaces/$(basename "$PWD")" ]; do
+    echo "⏳ Waiting for workspace mount..."
+    sleep 1
+done
+
+
 LOGFILE=/tmp/codespace-setup.log
 echo "=== Setup started ===" | tee $LOGFILE
 
@@ -39,6 +46,13 @@ EOF
 log "Starting MariaDB..."
 sudo service mariadb start >> $LOGFILE 2>&1
 sleep 5
+
+# Warten, bis MariaDB bereit ist
+until mysqladmin ping >/dev/null 2>&1; do
+    echo "⏳ Waiting for MariaDB..."
+    sleep 1
+done
+
 
 log "Setting root password..."
 sudo mysql <<EOF
@@ -79,9 +93,9 @@ mysql -u root -proot < /usr/share/phpmyadmin/sql/create_tables.sql >> $LOGFILE 2
 log "Executing init.sql..."
 mysql -u root -proot < /workspaces/mariadb-training-clean/init.sql >> $LOGFILE 2>&1
 
-# restart.sh ausführbar machen
-chmod +x "$(dirname "$0")/restart.sh"
 
+# restart.sh ausführbar machen
+chmod +x /workspaces/mariadb-training-clean/restart.sh
 
 log "=== Setup complete ==="
 log "MariaDB root password: root"
