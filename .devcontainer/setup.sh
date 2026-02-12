@@ -79,10 +79,6 @@ mysql -u root -proot < /usr/share/phpmyadmin/sql/create_tables.sql >> $LOGFILE 2
 log "Executing init.sql..."
 mysql -u root -proot < /workspaces/mariadb-training-clean/init.sql >> $LOGFILE 2>&1
 
-log "Starting phpMyAdmin on port 8888..."
-nohup php -S 0.0.0.0:8888 -t /usr/share/phpmyadmin >/tmp/pma.log 2>&1 &
-sleep 2
-
 # restart.sh ausführbar machen
 chmod +x "$(dirname "$0")/restart.sh"
 
@@ -90,3 +86,10 @@ chmod +x "$(dirname "$0")/restart.sh"
 log "=== Setup complete ==="
 log "MariaDB root password: root"
 log "phpMyAdmin running on port 8888"
+
+
+log "Starting phpMyAdmin on port 8888..."
+nohup php -S 0.0.0.0:8888 -t /usr/share/phpmyadmin >/tmp/pma.log 2>&1 &
+sleep 2
+
+
