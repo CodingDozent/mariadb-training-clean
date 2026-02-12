@@ -4,7 +4,7 @@ echo "🔄 Restarting MariaDB and PHP server..."
 
 # MariaDB sauber neu starten
 echo "➡️ Starting MariaDB..."
-sudo service mariadb stop
+sudo service mariadb stop >/dev/null 2>&1
 sudo service mariadb start >> /tmp/restart.log 2>&1
 
 # PHP Built-In Server neu starten
