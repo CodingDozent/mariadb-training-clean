@@ -4,8 +4,8 @@ echo "🔄 Restarting MariaDB and PHP server..."
 
 # MariaDB sauber neu starten
 echo "➡️ Starting MariaDB..."
-sudo /etc/init.d/mariadb stop >/dev/null 2>&1
-sudo /etc/init.d/mariadb start
+sudo service mariadb stop >> $LOGFILE 2>&1
+sudo service mariadb start >> $LOGFILE 2>&1
 
 # PHP Built-In Server neu starten
 echo "➡️ Starting PHP Built-In Server on port 8888..."
@@ -13,6 +13,6 @@ echo "➡️ Starting PHP Built-In Server on port 8888..."
 pkill -f "php -S 0.0.0.0:8888" >/dev/null 2>&1
 
 # Neu starten (im Hintergrund)
-php -S 0.0.0.0:8888 -t phpmyadmin >/dev/null 2>&1 &
+nohup php -S 0.0.0.0:8888 -t /usr/share/phpmyadmin >/tmp/pma.log 2>&1 &
 
 echo "✅ Services restarted."
